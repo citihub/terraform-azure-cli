@@ -14,7 +14,7 @@ on:
       - "!CODE_OF_CONDUCT.md"
 
 env:
-  ORGANIZATION: "zenika"
+  ORGANIZATION: "citihub"
   IMAGE_NAME: "terraform-azure-cli"
 
 jobs:

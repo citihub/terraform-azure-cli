@@ -9,7 +9,7 @@ on:
       - "!README.md"
 
 env:
-  ORGANIZATION: "zenika"
+  ORGANIZATION: "citihub"
   IMAGE_NAME: "terraform-azure-cli"
   IMAGE_TAG: "latest"
 
