@@ -10,11 +10,15 @@ docker run --rm -i hadolint/hadolint:v1.17.6-alpine < Dockerfile
 echo "Lint Successful!"
 
 # Build dev image
-if [ -n "$1" ] && [ -n "$2" ] ; then
-  echo "Building images with parameters AZURE_CLI_VERSION=${1} and TERRAFORM_VERSION=${2}..."
-  docker image build --build-arg AZURE_CLI_VERSION="$1" --build-arg TERRAFORM_VERSION="$2" -t $IMAGE_NAME .
+if [ -n "$1" ] && [ -n "$2" ] && [ -n "$3" ]; then
+  echo "Building release image with ${TAG}..."
+  TAG="release-1.0_terraform-${1}_azcli-${2}_databricks-${3}"
+  IMAGE_NAME="citihub/terraform-azure-cli:${TAG}"
+  echo "Building release image ${IMAGE_NAME}..."
+  docker image build --build-arg AZURE_CLI_VERSION="$1" --build-arg TERRAFORM_VERSION="$2" --build-arg DATABRICKS_CLI_VERSION="$3" -t $IMAGE_NAME .
+  docker push ${IMAGE_NAME}
 else
-  echo "Building images with default parameters..."
+  echo "Building dev images with default parameters..."
   docker image build -f Dockerfile -t $IMAGE_NAME .
 fi
 
