@@ -1,6 +1,7 @@
 # Setup build arguments with default versions
 ARG AZURE_CLI_VERSION=2.19.1
 ARG DATABRICKS_CLI_VERSION=0.14.1
+ARG DATABRICKS_PROVIDER_VERSION=0.3.1
 ARG TERRAFORM_VERSION=0.14.6
 ARG PYTHON_MAJOR_VERSION=3.7
 ARG DEBIAN_VERSION=buster-20201012-slim
@@ -24,6 +25,17 @@ RUN gpg --verify terraform_${TERRAFORM_VERSION}_SHA256SUMS.sig terraform_${TERRA
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN grep terraform_${TERRAFORM_VERSION}_linux_amd64.zip terraform_${TERRAFORM_VERSION}_SHA256SUMS | sha256sum -c -
 RUN unzip -j terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+
+# Download Terraform providers
+FROM debian:${DEBIAN_VERSION} as providers-cli
+ARG DATABRICKS_PROVIDER_VERSION
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
+RUN apt-get install -y --no-install-recommends wget=1.20.1-1.1
+RUN apt-get install -y --no-install-recommends unzip=6.0-23+deb10u2
+RUN mkdir -p /tfproviders
+RUN wget -q https://github.com/databrickslabs/terraform-provider-databricks/releases/download/v${DATABRICKS_PROVIDER_VERSION}/terraform-provider-databricks_${DATABRICKS_PROVIDER_VERSION}_linux_arm64.zip
+RUN unzip -d /tfproviders -j terraform-provider-databricks_${DATABRICKS_PROVIDER_VERSION}_linux_arm64.zip
 
 # Install az CLI using PIP
 FROM debian:${DEBIAN_VERSION} as azure-cli
@@ -65,6 +77,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
+COPY --from=providers-cli /tfproviders/terraform* /tfproviders/
 COPY --from=azure-cli /usr/local/bin/az* /usr/local/bin/
 COPY --from=azure-cli /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages
 COPY --from=azure-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-packages
