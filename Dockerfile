@@ -14,8 +14,6 @@ RUN apt-get install -y --no-install-recommends curl=7.64.0-4+deb10u1
 RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
 RUN apt-get install -y --no-install-recommends unzip=6.0-23+deb10u2
 RUN apt-get install -y --no-install-recommends gnupg=2.2.12-1+deb10u1
-RUN apt-get install -y --no-install-recommends wget=1.20.1-1.1
-RUN apt-get install -y --no-install-recommends jq=1.5+dfsg-2+b1
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS.sig
@@ -71,6 +69,8 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     ca-certificates=20200601~deb10u2 \
     git=1:2.20.1-2+deb10u3 \
+    wget=1.20.1-1.1 \
+    jq=1.5+dfsg-2+b1 \
     python3=${PYTHON_MAJOR_VERSION}.3-1 \
     python3-distutils=${PYTHON_MAJOR_VERSION}.3-1 \
   && apt-get clean \

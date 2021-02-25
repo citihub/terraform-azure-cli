@@ -20,10 +20,11 @@ Available image tags can be found on the Docker Hub registry: [citihub/terraform
 The following image tag strategy is applied:
 * `citihub/terraform-azure-cli:latest` - build from master
   * Included CLI versions can be found in the [Dockerfile](https://github.com/citihub/terraform-azure-cli/blob/master/Dockerfile)
-* `citihub/terraform-azure-cli:release-S.T_terraform-UU.VV.WW_azcli-XX.YY.ZZ` - build from releases
+* `citihub/terraform-azure-cli:release-S.T_terraform-UU.VV.WW_azcli-XX.YY.ZZ_databricks-AA.BB.CC` - build from releases
   * `release-S.T` is the release tag
   * `terraform-UU.VV.WWW` is the included Terraform CLI version
   * `azcli-XX.YY.ZZ` is the included Azure CLI version
+  * `databricks-AA.BB.ZZ` is the included Databricks CLI version
 
 Please report to the [releases page](https://github.com/citihub/terraform-azure-cli/releases) for the changelogs. Any other tags are not supported.
 
@@ -39,6 +40,12 @@ This image gives you the flexibility to be used for development or as a base ima
 * [Terraform CLI](https://www.terraform.io/docs/commands/index.html):
   * Included version indicated in the image tag: `terraform-XX.YY.ZZ`
   * Available versions on the [project release page](https://github.com/hashicorp/terraform/releases)
+* [Terraform Providers](https://www.terraform.io/docs/providers/index.html):
+  * Terraform providers are installed under: `/tfproviders`
+  * Databricks v0.3.1 [terraform-provider-databricks](https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs)
+* [Databricks CLI](https://docs.databricks.com/dev-tools/cli/index.html)
+  * Included version indicated in the image tag: `databricks-XX.YY.ZZ`
+  * Available versions on the [project release page](https://github.com/databricks/databricks-cli)
 * [Git](https://git-scm.com/)
   * Available versions on the [Debian Packages repository](https://packages.debian.org/search?suite=buster&arch=any&searchon=names&keywords=git)
 * [Python 3](https://www.python.org/)
