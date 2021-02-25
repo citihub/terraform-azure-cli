@@ -2,3 +2,4 @@
 # (each file needed in the Dockefile need to be included manually)
 *
 !hashicorp.asc
+!providers.tf

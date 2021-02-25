@@ -41,8 +41,12 @@ This image gives you the flexibility to be used for development or as a base ima
   * Included version indicated in the image tag: `terraform-XX.YY.ZZ`
   * Available versions on the [project release page](https://github.com/hashicorp/terraform/releases)
 * [Terraform Providers](https://www.terraform.io/docs/providers/index.html):
-  * Terraform providers are installed under: `/tfproviders`
-  * Databricks v0.3.1 [terraform-provider-databricks](https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs)
+  * Terraform providers are nirrored under: `/tfproviders`
+  * databricks v0.3.1 [terraform-provider-databricks](https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs)
+  * azurerm v2.48.0 [terrform-provider-azurerm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs)
+  * random v3.1.0 [terraform-provider-random](https://registry.terraform.io/providers/hashicorp/random/latest/docs)
+  * null v3.1.0 [terraform-provider-null](https://registry.terraform.io/providers/hashicorp/null/latest/docs)
+  * vault v2.15.0 [terraform-provider-vault](https://registry.terraform.io/providers/hashicorp/vault/latest/docs)
 * [Databricks CLI](https://docs.databricks.com/dev-tools/cli/index.html)
   * Included version indicated in the image tag: `databricks-XX.YY.ZZ`
   * Available versions on the [project release page](https://github.com/databricks/databricks-cli)
