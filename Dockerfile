@@ -26,10 +26,7 @@ RUN unzip -j terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 # Download Terraform providers
 FROM debian:${DEBIAN_VERSION} as providers-cli
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
-RUN apt-get update
 RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
-RUN apt-get install -y --no-install-recommends wget=1.20.1-1.1
-RUN apt-get install -y --no-install-recommends unzip=6.0-23+deb10u2
 COPY providers.tf providers.tf
 RUN terraform providers mirror /tfproviders
 
@@ -82,7 +79,6 @@ COPY --from=azure-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-packa
 COPY --from=databricks-cli /usr/local/bin/databricks* /usr/local/bin/
 COPY --from=databricks-cli /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages
 COPY --from=databricks-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-packages
-
 
 WORKDIR /workspace
 COPY .terraformrc .terraformrc
