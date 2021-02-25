@@ -1,7 +1,6 @@
 # Setup build arguments with default versions
 ARG AZURE_CLI_VERSION=2.19.1
 ARG DATABRICKS_CLI_VERSION=0.14.1
-ARG DATABRICKS_PROVIDER_VERSION=0.3.1
 ARG TERRAFORM_VERSION=0.14.6
 ARG PYTHON_MAJOR_VERSION=3.7
 ARG DEBIAN_VERSION=buster-20201012-slim
@@ -26,7 +25,6 @@ RUN unzip -j terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
 # Download Terraform providers
 FROM debian:${DEBIAN_VERSION} as providers-cli
-ARG DATABRICKS_PROVIDER_VERSION
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
@@ -87,6 +85,7 @@ COPY --from=databricks-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-
 
 
 WORKDIR /workspace
+COPY .terraformrc .terraformrc
 RUN groupadd --gid 1001 nonroot \
   # user needs a home folder to store azure credentials
   && useradd --gid nonroot --create-home --uid 1001 nonroot \

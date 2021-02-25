@@ -3,3 +3,4 @@
 *
 !hashicorp.asc
 !providers.tf
+!.terraformrc
