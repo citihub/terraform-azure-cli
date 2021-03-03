@@ -9,8 +9,8 @@ ARG DEBIAN_VERSION=buster-20201012-slim
 FROM debian:${DEBIAN_VERSION} as terraform-cli
 ARG TERRAFORM_VERSION
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends curl=7.64.0-4+deb10u1
 RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
+RUN apt-get install -y --no-install-recommends curl=7.64.0-4+deb10u1
 RUN apt-get install -y --no-install-recommends unzip=6.0-23+deb10u2
 RUN apt-get install -y --no-install-recommends gnupg=2.2.12-1+deb10u1
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
@@ -26,6 +26,7 @@ RUN unzip -j terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 # Download Terraform providers
 FROM debian:${DEBIAN_VERSION} as providers-cli
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
+RUN apt-get update
 RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
 COPY providers.tf providers.tf
 RUN terraform providers mirror /tfproviders
