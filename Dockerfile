@@ -10,7 +10,7 @@ FROM debian:${DEBIAN_VERSION} as terraform-cli
 ARG TERRAFORM_VERSION
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends curl=7.64.0-4+deb10u1
-RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
+#RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
 RUN apt-get install -y --no-install-recommends unzip=6.0-23+deb10u2
 RUN apt-get install -y --no-install-recommends gnupg=2.2.12-1+deb10u1
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
@@ -85,7 +85,10 @@ COPY .terraformrc .terraformrc
 RUN groupadd --gid 1001 nonroot \
   # user needs a home folder to store azure credentials
   && useradd --gid nonroot --create-home --uid 1001 nonroot \
-  && chown nonroot:nonroot /workspace
+  && chown nonroot:nonroot /workspace \
+  && chmod 777 /workspace \
+  && touch /.azure \
+  && chmod 777 /.azure
 USER nonroot
 
 CMD ["bash"]
