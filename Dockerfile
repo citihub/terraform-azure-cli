@@ -1,7 +1,7 @@
 # Setup build arguments with default versions
-ARG AZURE_CLI_VERSION=2.19.1
-ARG DATABRICKS_CLI_VERSION=0.14.1
-ARG TERRAFORM_VERSION=0.14.6
+ARG AZURE_CLI_VERSION=2.23.0
+ARG DATABRICKS_CLI_VERSION=0.14.3
+ARG TERRAFORM_VERSION=0.15.1
 ARG PYTHON_MAJOR_VERSION=3.7
 ARG DEBIAN_VERSION=buster-20201012-slim
 
@@ -10,7 +10,7 @@ FROM debian:${DEBIAN_VERSION} as terraform-cli
 ARG TERRAFORM_VERSION
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
-RUN apt-get install -y --no-install-recommends curl=7.64.0-4+deb10u1
+RUN apt-get install -y --no-install-recommends curl=7.64.0-4+deb10u2
 RUN apt-get install -y --no-install-recommends unzip=6.0-23+deb10u2
 RUN apt-get install -y --no-install-recommends gnupg=2.2.12-1+deb10u1
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS

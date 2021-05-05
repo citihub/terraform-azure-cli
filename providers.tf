@@ -12,7 +12,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "~> 2.48.0"
+            version = "~> 2.57.0"
         }
         azuread = {
             source = "hashicorp/azuread"
@@ -20,7 +20,7 @@ terraform {
         }
         databricks = {
             source  = "databrickslabs/databricks"
-            version = "~> 0.3.1"
+            version = "~> 0.3.3"
         }
         random = {
             source = "hashicorp/random"
@@ -32,7 +32,7 @@ terraform {
         }
         vault = {
             source = "hashicorp/vault"
-            version = "~> 2.15.0"
+            version = "~> 2.19.1"
         }
     }
 }
