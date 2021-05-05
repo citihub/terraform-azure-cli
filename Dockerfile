@@ -1,5 +1,5 @@
 # Setup build arguments with default versions
-ARG AZURE_CLI_VERSION=2.22.1
+ARG AZURE_CLI_VERSION=2.22.1-1~buster
 ARG DATABRICKS_CLI_VERSION=0.14.3
 ARG TERRAFORM_VERSION=0.15.1
 ARG PYTHON_MAJOR_VERSION=3.7
@@ -36,13 +36,20 @@ FROM debian:${DEBIAN_VERSION} as azure-cli
 ARG AZURE_CLI_VERSION
 ARG PYTHON_MAJOR_VERSION
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends python3=${PYTHON_MAJOR_VERSION}.3-1
-RUN apt-get install -y --no-install-recommends python3-pip=18.1-5
-RUN apt-get install -y --no-install-recommends gcc=4:8.3.0-1
-RUN apt-get install -y --no-install-recommends python3-dev=${PYTHON_MAJOR_VERSION}.3-1
-RUN pip3 install setuptools==50.3.2
-RUN pip3 install wheel==0.35.1
-RUN pip3 install azure-cli==${AZURE_CLI_VERSION}
+RUN apt-get install -y --no-install-recommends ca-certificates=20200601~deb10u2
+RUN apt-get install -y --no-install-recommends curl=7.64.0-4+deb10u2
+RUN apt-get install -y --no-install-recommends apt-transport-https=1.8.2.2
+RUN apt-get install -y --no-install-recommends lsb-release=10.2019051400
+RUN apt-get install -y --no-install-recommends gnupg=2.2.12-1+deb10u1
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | \
+    gpg --dearmor | \
+    tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+RUN AZ_REPO=$(lsb_release -cs) \
+    && echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
+    tee /etc/apt/sources.list.d/azure-cli.list
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends azure-cli=${AZURE_CLI_VERSION}
 
 # Install databrics CLI using PIP
 FROM debian:${DEBIAN_VERSION} as databricks-cli
@@ -74,9 +81,8 @@ RUN apt-get update \
   && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
 COPY --from=providers-cli /tfproviders /tfproviders
-COPY --from=azure-cli /usr/local/bin/az* /usr/local/bin/
-COPY --from=azure-cli /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages
-COPY --from=azure-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-packages
+COPY --from=azure-cli /usr/bin/az* /usr/bin/
+COPY --from=azure-cli /opt/az /opt/az
 COPY --from=databricks-cli /usr/local/bin/databricks* /usr/local/bin/
 COPY --from=databricks-cli /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages
 COPY --from=databricks-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-packages
