@@ -88,7 +88,7 @@ RUN groupadd --gid 1001 nonroot \
   && useradd --gid nonroot --create-home --uid 1001 nonroot \
   && chown nonroot:nonroot /workspace \
   && chmod 777 /workspace \
-  && touch /.azure \
+  && mkdir /.azure \
   && chmod 777 /.azure
 USER nonroot
 
