@@ -21,12 +21,17 @@ commandTests:
   - name: "Check Terraform CLI version"
     command: "terraform"
     args: ["version"]
-    expectedOutput: ["Terraform v0.14.6"]
+    expectedOutput: ["Terraform v0.15.1"]
 
   - name: "Check Azure CLI version"
     command: "az"
     args: ["version"]
-    expectedOutput: ['"azure-cli": "2.19.1"']
+    expectedOutput: ['"azure-cli": "2.22.1"']
+
+  - name: "Check Databricks CLI version"
+    command: "databricks"
+    args: ["--version"]
+    expectedOutput: ["Version 0.14.3"]
 
 fileExistenceTests:
   - name: 'Check nonroot user home'
@@ -39,7 +44,7 @@ fileExistenceTests:
   - name: 'Check nonroot user rights on /workspace folder'
     path: '/workspace'
     shouldExist: true
-    permissions: 'drwxr-xr-x'
+    permissions: 'drwxrwxrwx'
     uid: 1001
     gid: 1001
     isExecutableBy: 'group'
