@@ -22,6 +22,8 @@ RUN gpg --verify terraform_${TERRAFORM_VERSION}_SHA256SUMS.sig terraform_${TERRA
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN grep terraform_${TERRAFORM_VERSION}_linux_amd64.zip terraform_${TERRAFORM_VERSION}_SHA256SUMS | sha256sum -c -
 RUN unzip -j terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+COPY src/bin/gitlab-terraform.sh /gitlab-terraform
+RUN chmod +x /gitlab-terraform
 
 # Download Terraform providers
 FROM debian:${DEBIAN_VERSION} as providers-cli
@@ -72,9 +74,8 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1
-COPY src/bin/gitlab-terraform.sh /usr/local/bin/gitlab-terraform
-RUN chmod +x /usr/local/bin/gitlab-terraform
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
+COPY --from=terraform-cli /gitlab-terraform /usr/local/bin/gitlab-terraform
 COPY --from=providers-cli /tfproviders /tfproviders
 COPY --from=azure-cli /usr/local/bin/az* /usr/local/bin/
 COPY --from=azure-cli /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages /usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages
