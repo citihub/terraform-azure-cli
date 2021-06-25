@@ -22,8 +22,8 @@ RUN gpg --verify terraform_${TERRAFORM_VERSION}_SHA256SUMS.sig terraform_${TERRA
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN grep terraform_${TERRAFORM_VERSION}_linux_amd64.zip terraform_${TERRAFORM_VERSION}_SHA256SUMS | sha256sum -c -
 RUN unzip -j terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-COPY src/bin/gitlab-terraform.sh /gitlab-terraform
-RUN chmod +x /gitlab-terraform
+COPY gitlab-terraform.sh gitlab-terraform
+RUN chmod +x gitlab-terraform
 
 # Download Terraform providers
 FROM debian:${DEBIAN_VERSION} as providers-cli
