@@ -72,6 +72,8 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1
+COPY src/bin/gitlab-terraform.sh /usr/local/bin/gitlab-terraform
+RUN chmod +x /usr/local/bin/gitlab-terraform
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
 COPY --from=providers-cli /tfproviders /tfproviders
 COPY --from=azure-cli /usr/local/bin/az* /usr/local/bin/

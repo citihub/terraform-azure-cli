@@ -28,6 +28,33 @@ The following image tag strategy is applied:
 
 Please report to the [releases page](https://github.com/citihub/terraform-azure-cli/releases) for the changelogs. Any other tags are not supported.
 
+## Gitlab Terraform
+
+The docker image contains the gitlab-terraform shell script. This script is a thin wrapper around the terraform binary. Its main purpose is to serve the Infrastructure as code with Terraform and GitLab
+, by extracting some of the standard configuration a user would need to set up to use the Terraform backend on GitLab as well as the Terraform merge request widget.
+
+How to use it
+The wrapper expects three environment variables to be set:
+
+TF_ADDRESS
+
+Should be the backend url. For the GitLab backend it will be something like,
+"{GITLAB_API_URL}/projects/{PROJECT_ID}/terraform/state/{STATE_NAME}"
+
+- {GITLAB_API_URL} is the URL of your GitLab API.
+
+- {PROJECT_ID} is the id of the project you're using as your infrastructure as code.
+
+- {STATE_NAME} can be arbitrarily defined to the Terraform state name one wants to create.
+
+TF_USERNAME
+
+Is your user login name, which must have maintainer access. If this is unset, it will default to the value of GITLAB_USER_LOGIN which is the username that triggered the build.
+
+TF_PASSWORD
+
+An access token created for the above maintainer with the api scope. If this is unset, it will default to the value of CI_JOB_TOKEN and override the TF_USERNAME to match.
+
 ## 💡Motivation
 The goal is to create a **minimalist** and **lightweight** image with these tools in order to reduce network and storage impact.
 
