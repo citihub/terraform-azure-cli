@@ -25,8 +25,7 @@ JQ_PLAN='
 
 # CA CERTS
 if [ -n "${TF_CACERTS}" ]; then
-  cp ${TF_CACERTS}/* /usr/local/share/ca-certificates
-  /usr/sbin/update-ca-certificates
+  sudo bash -c "cp ${TF_CACERTS}/* /usr/local/share/ca-certificates && /usr/sbin/update-ca-certificates"
 fi
 
 # If TF_USERNAME is unset then default to GITLAB_USER_LOGIN
