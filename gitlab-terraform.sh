@@ -81,6 +81,7 @@ init() {
     terraform init "${@}" -plugin-dir="${TF_PLUGIN_DIR}" -reconfigure
   else
     terraform init "${@}" -reconfigure
+  fi
 }
 
 case "${1}" in

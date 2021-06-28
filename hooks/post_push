@@ -2,7 +2,7 @@
 
 set -e
 
-RELEASE_VERSION=${RELEASE_VERSION:-"1.2"}
+RELEASE_VERSION=${RELEASE_VERSION:-"1.2.1"}
 AZURE_CLI_VERSION=${AZURE_CLI_VERSION:-"2.25.0"}
 TERRAFORM_VERSION=${TERRAFORM_VERSION:-"1.0.1"}
 DATABRICKS_CLI_VERSION=${DATABRICKS_CLI_VERSION:-"0.14.3"}
@@ -14,7 +14,7 @@ tagStart=$(expr index "$IMAGE_NAME" :)
 repoName=${IMAGE_NAME:0:tagStart-1}
 
 # Tag and push image for each additional tag
-for tag in {${TAG},release-${RELEASE_VERSION},latest}; do
+for tag in {${TAG},${RELEASE_VERSION},latest}; do
     docker tag $IMAGE_NAME ${repoName}:${tag}
     docker push ${repoName}:${tag}
 done
