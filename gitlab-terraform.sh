@@ -23,6 +23,12 @@ JQ_PLAN='
   }
 '
 
+# CA CERTS
+if [ -n "${TF_CACERTS}" ]; then
+  cp ${TF_CACERTS}/* /usr/local/share/ca-certificates
+  /usr/sbin/update-ca-certificates
+fi
+
 # If TF_USERNAME is unset then default to GITLAB_USER_LOGIN
 TF_USERNAME="${TF_USERNAME:-${GITLAB_USER_LOGIN}}"
 
@@ -46,6 +52,7 @@ export TF_HTTP_UNLOCK_METHOD="${TF_HTTP_UNLOCK_METHOD:-DELETE}"
 export TF_HTTP_USERNAME="${TF_HTTP_USERNAME:-${TF_USERNAME}}"
 export TF_HTTP_PASSWORD="${TF_HTTP_PASSWORD:-${TF_PASSWORD}}"
 export TF_HTTP_RETRY_WAIT_MIN="${TF_HTTP_RETRY_WAIT_MIN:-5}"
+export TF_HTTP_SKIP_CERT_VERIFY="${TF_HTTP_SKIP_CERT_VERIFY:-false}"
 
 # Use terraform automation mode (will remove some verbose unneeded messages)
 export TF_IN_AUTOMATION=true
@@ -68,7 +75,8 @@ init() {
       -backend-config=password="${TF_HTTP_PASSWORD}" \
       -backend-config=lock_method="${TF_HTTP_LOCK_METHOD}" \
       -backend-config=unlock_method="${TF_HTTP_UNLOCK_METHOD}" \
-      -backend-config=retry_wait_min="${TF_HTTP_RETRY_WAIT_MIN}"
+      -backend-config=retry_wait_min="${TF_HTTP_RETRY_WAIT_MIN}" \
+      -backend-config=skip_cert_verification="${TF_HTTP_SKIP_CERT_VERIFY}"
   fi
   terraform init "${@}" -reconfigure
 }

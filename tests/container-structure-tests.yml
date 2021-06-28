@@ -21,17 +21,17 @@ commandTests:
   - name: "Check Terraform CLI version"
     command: "terraform"
     args: ["version"]
-    expectedOutput: ["Terraform v0.14.6"]
+    expectedOutput: ["Terraform v1.0.1"]
 
   - name: "Check Azure CLI version"
     command: "az"
     args: ["version"]
-    expectedOutput: ['"azure-cli": "2.19.1"']
+    expectedOutput: ['"azure-cli": "2.25.0"']
 
   - name: "Check Databricks CLI version"
     command: "databricks"
     args: ["--version"]
-    expectedOutput: ["Version 0.14.1"]
+    expectedOutput: ["Version 0.14.3"]
 
 fileExistenceTests:
   - name: 'Check nonroot user home'

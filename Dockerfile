@@ -66,6 +66,7 @@ ARG PYTHON_MAJOR_VERSION
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     ca-certificates=20200601~deb10u2 \
+    sudo=1.8.27-1+deb10u3 \
     git=1:2.20.1-2+deb10u3 \
     wget=1.20.1-1.1 \
     jq=1.5+dfsg-2+b1 \
@@ -73,7 +74,8 @@ RUN apt-get update \
     python3-distutils=${PYTHON_MAJOR_VERSION}.3-1 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
-  && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1
+  && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1 \
+  && echo '%sudo ALL=/usr/sbin/update-ca-certificates NOPASSWD:ALL' >> /etc/sudoers
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
 COPY --from=terraform-cli /gitlab-terraform /usr/local/bin/gitlab-terraform
 COPY --from=providers-cli /tfproviders /tfproviders
@@ -89,6 +91,7 @@ COPY .terraformrc .terraformrc
 RUN groupadd --gid 1001 nonroot \
   # user needs a home folder to store azure credentials
   && useradd --gid nonroot --create-home --uid 1001 nonroot \
+  && adduser nonroot sudo \
   && chown nonroot:nonroot /workspace \
   && chmod 777 /workspace \
   && mkdir /.azure \
