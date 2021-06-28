@@ -30,10 +30,10 @@ Please report to the [releases page](https://github.com/citihub/terraform-azure-
 
 ## Gitlab Terraform
 
-The docker image contains the gitlab-terraform shell script. This script is a thin wrapper around the terraform binary. Its main purpose is to serve the Infrastructure as code with Terraform and GitLab
+The docker image contains the `gitlab-terraform` shell script. This script is a thin wrapper around the terraform binary. Its main purpose is to serve the Infrastructure as code with Terraform and GitLab
 , by extracting some of the standard configuration a user would need to set up to use the Terraform backend on GitLab as well as the Terraform merge request widget.
 
-How to use it
+### How to use it
 The wrapper expects three environment variables to be set:
 
 TF_ADDRESS
@@ -54,6 +54,20 @@ Is your user login name, which must have maintainer access. If this is unset, it
 TF_PASSWORD
 
 An access token created for the above maintainer with the api scope. If this is unset, it will default to the value of CI_JOB_TOKEN and override the TF_USERNAME to match.
+
+
+### Optional environment variables
+
+TF_CACERTS
+
+A directory with CA certificates to added to the docker image. The contents of the TF_CACERTS directory are copied to the `/usr/local/shared/ca-certificates` directory in the running container and `/usr/sbin/update-ca-certificates` is run to update the container CA certificates.
+
+TF_HTTP_SKIP_CERT_VERIFY
+
+Whether to skip TLS verification. Possible values are true or false. Defaults to false.
+
+### HTTP backend
+Terraform HTTP backend environment variables are also implemented - see [Terraform http backend](https://www.terraform.io/docs/language/settings/backends/http.html)
 
 ## 💡Motivation
 The goal is to create a **minimalist** and **lightweight** image with these tools in order to reduce network and storage impact.

@@ -42,6 +42,7 @@ RUN apt-get install -y --no-install-recommends python3=${PYTHON_MAJOR_VERSION}.3
 RUN apt-get install -y --no-install-recommends python3-pip=18.1-5
 RUN apt-get install -y --no-install-recommends gcc=4:8.3.0-1
 RUN apt-get install -y --no-install-recommends python3-dev=${PYTHON_MAJOR_VERSION}.3-1
+RUN pip3 install --upgrade pip==21.1.3
 RUN pip3 install setuptools==50.3.2
 RUN pip3 install wheel==0.35.1
 RUN pip3 install azure-cli==${AZURE_CLI_VERSION}
