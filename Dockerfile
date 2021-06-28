@@ -75,7 +75,7 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1 \
-  && echo '%sudo ALL=/usr/sbin/update-ca-certificates NOPASSWD:ALL' >> /etc/sudoers
+  && echo '%sudo ALL=NOPASSWD: /usr/sbin/update-ca-certificates' >> /etc/sudoers
 COPY --from=terraform-cli /terraform /usr/local/bin/terraform
 COPY --from=terraform-cli /gitlab-terraform /usr/local/bin/gitlab-terraform
 COPY --from=providers-cli /tfproviders /tfproviders
