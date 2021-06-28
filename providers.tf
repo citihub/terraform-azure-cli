@@ -1,11 +1,11 @@
 ###############################################################################
-# 
+#
 # providers.tf
 #   Terraform provider definitions
 #
 # REVISION HISTORY:
 #   21 FEB 2021 des Created
-# 
+#
 # (c) 2021 Citihub Ltd
 ###############################################################################
 terraform {
@@ -32,7 +32,7 @@ terraform {
         }
         vault = {
             source = "hashicorp/vault"
-            version = "= 2.19.1"
+            version = "= 2.20.1"
         }
     }
 }

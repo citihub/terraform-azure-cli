@@ -77,7 +77,10 @@ init() {
       -backend-config=retry_wait_min="${TF_HTTP_RETRY_WAIT_MIN}" \
       -backend-config=skip_cert_verification="${TF_HTTP_SKIP_CERT_VERIFY}"
   fi
-  terraform init "${@}" -reconfigure
+  if [ -n "${TF_PLUGIN_DIR}" ]; then
+    terraform init "${@}" -plugin-dir="${TF_PLUGIN_DIR}" -reconfigure
+  else
+    terraform init "${@}" -reconfigure
 }
 
 case "${1}" in
